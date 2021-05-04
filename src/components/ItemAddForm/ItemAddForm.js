@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import './ItemAddForm.css'
 
@@ -32,4 +33,8 @@ const ItemAddForm = ({ onItemAdded }) => {
     );
 }
 
-export default ItemAddForm;
+ItemAddForm.propTypes = {
+    onItemAdded: PropTypes.func.isRequired
+};
+
+export default ItemAddForm

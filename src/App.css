@@ -1,8 +1,11 @@
 .todo-app {
     margin: 2rem auto 0 auto;
-    max-width: 400px;
+    max-width: 500px;
 }
 
 .top-panel {
+    display: flex;
     margin: 1rem 0;
+    max-width: 500px;
 }
+

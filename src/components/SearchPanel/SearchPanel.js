@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
 import './SearchPanel.css'
 
@@ -13,8 +14,9 @@ const SearchPanel = ({ onSearchChange }) => {
 
     return (
         <form>
-            <input type="text"
-                className="form-control search-input"
+            <input
+                type='text'
+                className='form-control search-input'
                 placeholder='Search'
                 value={term}
                 onChange={changeInputValue}></input>
@@ -22,4 +24,8 @@ const SearchPanel = ({ onSearchChange }) => {
     );
 }
 
-export default SearchPanel;
+SearchPanel.propTypes = {
+    onSearchChange: PropTypes.func.isRequired
+};
+
+export default SearchPanel

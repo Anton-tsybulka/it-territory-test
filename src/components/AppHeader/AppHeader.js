@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import './AppHeader.css'
 
@@ -11,4 +12,9 @@ const AppHeader = ({ toDo, done }) => {
     );
 }
 
-export default AppHeader;
+AppHeader.propTypes = {
+    toDo: PropTypes.number.isRequired,
+    done: PropTypes.number.isRequired
+};
+
+export default AppHeader

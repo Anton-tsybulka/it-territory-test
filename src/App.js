@@ -1,68 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import AppHeader from './components/AppHeader/AppHeader'
-import ItemAddForm from './components/ItemAddForm/ItemAddForm'
-import SearchPanel from './components/SearchPanel/SearchPanel'
-import ItemStatusFilter from './components/ItemStatusFilter/ItemStatusFilter'
-import TodoList from './components/TodoList/TodoList'
+import {
+    AppHeader,
+    ItemAddForm,
+    SearchPanel,
+    ItemStatusFilter,
+    TodoList
+} from './components'
+
+import {
+    transformation,
+    createTodoItem,
+    toggleProperty,
+    filterPanel,
+    searchItem
+} from './helpers'
 
 import './App.css'
 
-let ind = 100;
-const createTodoItem = (label) => {
-    return {
-        label,
-        import: false,
-        done: false,
-        id: ind++
-    }
-};
-
-const toggleProperty = (arr, id, propName) => {
-    const indx = arr.findIndex(it => it.id === id)
-
-    const oldItem = arr[indx]
-    const newItem = { ...oldItem, [propName]: !oldItem[propName] }
-
-    return [...arr.slice(0, indx), newItem, ...arr.slice(indx + 1)]
-
-};
-
-const filterPanel = (items, filter) => {
-    switch (filter) {
-        case 'all':
-            return items
-        case 'active':
-            return items.filter(it => !it.done)
-        case 'done':
-            return items.filter(it => it.done)
-        default:
-            return items
-    }
-};
-
-const searchItem = (items, term) => {
-    if (term.length === 0) return items
-
-    return items.filter(it => it.label.toLowerCase().includes(term.toLowerCase()))
-};
+import firebase from 'firebase'
 
 const App = () => {
-    const [todoData, setTodoData] = useState([
-        createTodoItem('Drink Coffee'),
-        createTodoItem('Learn React'),
-        createTodoItem('Create App')
-    ]);
+    const [todoData, setTodoData] = useState([]);
     const [term, setTerm] = useState('');
     const [filter, setFilter] = useState('all');
+    const listRef = firebase.database().ref('list');
+
+    useEffect(() => {
+        listRef.on('value', item => setTodoData(transformation(item.val())));
+    }, []);
 
     const deleteItem = (id) => {
-        setTodoData(todoData.filter(it => it.id !== id))
+        listRef.child(id).remove();
     };
 
     const addItem = (text) => {
         const newItem = createTodoItem(text);
-        setTodoData([...todoData, newItem]);
+        listRef.push(newItem);
     };
 
     const onToggleImportant = (id) => {
@@ -81,6 +55,10 @@ const App = () => {
         setFilter(filter);
     };
 
+    const onChangeLabel = (id, value) => {
+        listRef.update({ [id]: value });
+    };
+
     const visibleItems = filterPanel(searchItem(todoData, term), filter),
         doneCount = todoData.filter(it => it.done).length,
         todoCount = todoData.length - doneCount;
@@ -90,7 +68,7 @@ const App = () => {
             <AppHeader
                 toDo={todoCount}
                 done={doneCount} />
-            <div className='top-panel d-flex'>
+            <div className='top-panel'>
                 <SearchPanel onSearchChange={onSearchChange} />
                 <ItemStatusFilter
                     filter={filter}
@@ -100,10 +78,11 @@ const App = () => {
                 todos={visibleItems}
                 onDeleted={deleteItem}
                 onToggleImportant={onToggleImportant}
-                onToggleDone={onToggleDone} />
+                onToggleDone={onToggleDone}
+                onChangeLabel={onChangeLabel} />
             <ItemAddForm onItemAdded={addItem} />
         </div>
     );
 }
 
-export default App;
+export default App

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import './ItemStatusFilter.css'
 
@@ -29,4 +30,9 @@ const ItemStatusFilter = ({ filter, onFilterChange }) => {
     );
 }
 
-export default ItemStatusFilter;
+ItemStatusFilter.propTypes = {
+    filter: PropTypes.string.isRequired,
+    onFilterChange: PropTypes.func.isRequired
+};
+
+export default ItemStatusFilter
