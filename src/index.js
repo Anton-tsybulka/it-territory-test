@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import firebase from 'firebase/app';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBwgIQg5ELU4utQGDhSf1GDYfYqdEFUP3s",

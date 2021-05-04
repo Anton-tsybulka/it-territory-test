@@ -6,21 +6,23 @@ import TodoListItem from '../TodoListItem/TodoListItem'
 import './TodoList.css'
 
 const TodoList = ({ todos, onDeleted, onToggleImportant, onToggleDone, onChangeLabel }) => {
-    const elements = todos.map(it => {
-        const { id } = it
-        return (
-            <li
-                key={id}
-                className='list-group-item'>
-                <TodoListItem
-                    {...it}
-                    onDeleted={() => onDeleted(id)}
-                    onToggleImportant={() => onToggleImportant(id)}
-                    onToggleDone={() => onToggleDone(id)}
-                    onChangeLabel={onChangeLabel} />
-            </li>
-        )
-    });
+    const elements = todos &&
+        todos.length !== 0 &&
+        todos.map(it => {
+            const { id } = it
+            return (
+                <li
+                    key={id}
+                    className='list-group-item'>
+                    <TodoListItem
+                        {...it}
+                        onDeleted={() => onDeleted(id)}
+                        onToggleImportant={() => onToggleImportant(id)}
+                        onToggleDone={() => onToggleDone(id)}
+                        onChangeLabel={onChangeLabel} />
+                </li>
+            )
+        });
 
     return (
         <ul className='list-group todo-list'>

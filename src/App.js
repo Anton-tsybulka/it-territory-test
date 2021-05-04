@@ -18,7 +18,7 @@ import {
 
 import './App.css'
 
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 
 const App = () => {
     const [todoData, setTodoData] = useState([]);
